@@ -1,3 +1,4 @@
+package Paquete;
 
 public class Producto {
     
