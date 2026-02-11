@@ -12,7 +12,7 @@ public class DetallePedido {
         this.precioUnitario = producto.getPrecio();
     }
 
-    public Producto geProducto(){
+    public Producto getProducto(){
         return producto;
     }
 
