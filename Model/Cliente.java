@@ -6,6 +6,9 @@ public abstract class Cliente {
     private String nombre;
 
     public Cliente(int id, String nombre){
+        if ( nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre no puede estar vacio");
+        }
         this.id = id;
         this.nombre = nombre;
     }
@@ -18,5 +21,10 @@ public abstract class Cliente {
         return nombre;
     }
 
-    public abstract double calcularDescuento(double subtotal);
+    public abstract double calcularDescuento(double monto);
+
+    @Override
+    public String toString(){
+        return "ID: " + id + " | Nombre: " + nombre;
+    }
 }

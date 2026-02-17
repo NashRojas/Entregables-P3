@@ -1,19 +1,21 @@
 package Model;
+import java.util.List;
+import java.util.ArrayList;
 
 public class SistemaGestion {
 
-    private Producto[] productos;
-    private Cliente[] clientes;
-    private Pedido[] pedidos;
+    private List<Producto> productos;
+    private List<Cliente> clientes;
+    private List<Pedido> pedidos;
 
     private int contProductos;
     private int contClientes;
     private int contPedidos;
 
-    public SistemaGestion(int maxProductos, int maxClientes, int maxPedidos) {
-        productos = new Producto[maxProductos];
-        clientes = new Cliente[maxClientes];
-        pedidos = new Pedido[maxPedidos];
+    public SistemaGestion() {
+        productos = new ArrayList<>();
+        clientes = new ArrayList<>();
+        pedidos = new ArrayList<>();
     }
 
     
