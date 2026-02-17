@@ -8,11 +8,15 @@ public class Producto {
     private int stock;
 
     public Producto(int id, String nombre, double precio, int stock) {
+
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del producto no puede estar vacio");
+        }
         if (precio <= 0){
-            System.out.println("El precio debe ser mayor que 0");
+            throw new IllegalArgumentException("El precio del producto debe ser mayor que 0");
         }
         if (stock < 0){
-            System.out.println("El stock no puede ser negativo");
+            throw new IllegalArgumentException("El Stock del producto debe ser mayor que 0");
         }
 
         this.id = id;
@@ -46,5 +50,10 @@ public class Producto {
 
     public void aumentarStock(int cantidad){
         stock += cantidad;
+    }
+
+    @Override
+    public String toString(){
+        return "ID: " + id + "| Nombre: " + nombre + "| Precio: " + precio + "| Stock: " + stock;
     }
 }

@@ -21,7 +21,7 @@ public abstract class Cliente {
         return nombre;
     }
 
-    public abstract double calcularDescuento(double monto);
+    public abstract double calcularDescuento(double subtotal);
 
     @Override
     public String toString(){

@@ -23,4 +23,9 @@ public class DetallePedido {
     public double getSubtotal(){
         return cantidad * precioUnitario;
     }
+
+    @Override
+    public String toString() {
+        return producto.getNombre() + "| Cantidad: " + cantidad + "| Subtotal: " + getSubtotal();
+    }
 }
