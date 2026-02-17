@@ -1,4 +1,4 @@
-package Paquete;
+package Model;
 
 public class Pedido {
     public static final String BORRADOR = "BORRADOR";

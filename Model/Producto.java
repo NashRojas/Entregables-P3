@@ -1,4 +1,4 @@
-package Paquete;
+package Model;
 
 public class Producto {
     
