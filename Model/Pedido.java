@@ -1,4 +1,5 @@
 package Model;
+import java.text.SimpleDateFormat;
 import java.util.*;
 public class Pedido {
     public static final String BORRADOR = "BORRADOR";
@@ -29,6 +30,11 @@ public class Pedido {
     public String getEstado() {
         return estado;
     }
+    public String getFechaFormateada(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(fechaCreacion);
+    }
+
 
     public void agregarProducto(Producto producto, int cantidad) {
         if (!estado.equals(BORRADOR)) {
@@ -73,4 +79,13 @@ public class Pedido {
     public void cancelar(){
         estado = CANCELADO;
     }
+
+    @Override
+    public String toString() {
+        return "Pedido ID: " + id +
+            "\nCliente: " + cliente.getNombre() +
+            "\nFecha: " + getFechaFormateada() +
+            "\nTotal productos: " + detalles.size();
+}
+
 }

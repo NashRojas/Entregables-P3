@@ -1,5 +1,6 @@
 package Controller;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import Model.*;
 
@@ -108,6 +109,7 @@ public class SistemaGestion {
         pedido.agregarProducto(producto, cantidad);
     }
 
+
     public void confirmarPedido(int idPedido)throws PedidoInvalidoException {
 
         Pedido pedido = buscarPedidoPorId(idPedido);
@@ -130,6 +132,7 @@ public class SistemaGestion {
         pedido.confirmar();
     }
 
+
     public void cancelarPedido(int idPedido) {
 
         Pedido pedido = buscarPedidoPorId(idPedido);
@@ -148,10 +151,34 @@ public class SistemaGestion {
     }
 
     public void listarPedidos() {
+    if (pedidos.isEmpty()) {
+        System.out.println("No hay pedidos registrados.");
+        return;
+    }
+
+    for (Pedido p : pedidos) {
+        System.out.println("------------------------");
+        System.out.println(p);
+    }
+}
+
+
+    public void listarPedidosPorFecha(Date fecha) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaBuscada = sdf.format(fecha);
+
+        boolean encontrado = false;
+
         for (Pedido p : pedidos) {
-            System.out.println("ID Pedido: " + p.getId()
-                    + " | Estado: " + p.getEstado()
-                    + " | Total: " + p.calcularTotal());
+            String fechaPedido = sdf.format(p.getFechaCreacion());
+
+            if ( fechaPedido.equals(fechaBuscada)) {
+                System.out.println(p);
+                encontrado = true;
+            }
+        }
+        if (!encontrado){
+            System.out.println("No se encontraron pedidos en esa fecha.");
         }
     }
 
@@ -173,5 +200,19 @@ public class SistemaGestion {
             System.out.println("Producto: " + d.getProducto().getNombre()
                     + " | Cantidad: " + d.getCantidad());
         }
+    }
+
+    public void eliminarProducto(int id) throws ProductoNoEncontradoException {
+        Iterator<Producto> iterator = productos.iterator();
+
+        while (iterator.hasNext()) {
+            Producto p = iterator.next();
+
+            if (p.getId() == id) {
+                iterator.remove();
+                return;
+            }
+        }
+        throw new ProductoNoEncontradoException("Producto no encontrado");
     }
 }
