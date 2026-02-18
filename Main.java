@@ -1,30 +1,32 @@
 
-import java.util.Scanner;
+import java.util.*;
 
-import Controller.SistemaGestion;
+import Controller.*;
 import Model.*;
 public class Main {
 
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-        SistemaGestion sistema = new SistemaGestion(20, 20, 20);
+        SistemaGestion sistema = new SistemaGestion();
 
         int opcion;
 
         do {
-
-            System.out.println("\n1. Registrar producto");
-            System.out.println("2. Registrar cliente");
-            System.out.println("3. Crear pedido");
-            System.out.println("4. Agregar producto a pedido");
-            System.out.println("5. Ver detalle de pedido");
-            System.out.println("6. Listar productos");
-            System.out.println("7. Listar pedidos");
-            System.out.println("8. Cambiar estado de pedido");
-            System.out.println("0. Salir");
-
+            System.out.println("\n======= Sistema De Gestion =======");
+            System.out.println("1) Registrar producto");
+            System.out.println("2) Registrar cliente");
+            System.out.println("3) Crear pedido");
+            System.out.println("4) Agregar producto a pedido");
+            System.out.println("5) Ver detalle de pedido");
+            System.out.println("6) Listar productos");
+            System.out.println("7) Listar pedidos");
+            System.out.println("8) Cambiar estado de pedido");
+            System.out.println("0) Salir");
+            System.out.println("==================================");
+            System.out.print("Inserte una opcion: ");
             opcion = sc.nextInt();
+            sc.nextLine();
 
             try {
 
@@ -44,7 +46,7 @@ public class Main {
                         System.out.print("Stock: ");
                         int stock = sc.nextInt();
 
-                        sistema.registrarProducto(idProd, nombreProd, precio, stock);
+                        sistema.registrarProducto(new Producto(idProd, nombreProd, precio, stock));
                         break;
 
                     case 2:
@@ -61,7 +63,7 @@ public class Main {
                         if (tipo == 1) {
                             sistema.registrarCliente(new ClienteRegular(idCli, nombreCli));
                         } else {
-                            System.out.print("Porcentaje descuento: ");
+                            System.out.print("Porcentaje descuento(Ej 0.15 = 15%): ");
                             double desc = sc.nextDouble();
                             sistema.registrarCliente(new ClienteVIP(idCli, nombreCli, desc));
                         }
@@ -119,8 +121,20 @@ public class Main {
 
                 }
 
+            } catch (ProductoNoEncontradoException | StockInsuficienteException | PedidoInvalidoException e) {
+
+                System.out.println("Error controlado: " + e.getMessage());
+
+            } catch (IllegalArgumentException e) {
+
+                System.out.println("Error de entrada: " + e.getMessage());
+
             } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
+
+                System.out.println("Error inesperado: " + e.getMessage());
+
+            } finally {
+                System.out.println("Operación finalizada.");
             }
 
         } while (opcion != 0);
