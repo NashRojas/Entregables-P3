@@ -1,6 +1,8 @@
-package Model;
-import java.util.List;
-import java.util.ArrayList;
+package Controller;
+
+import java.util.*;
+import Model.*;
+
 
 public class SistemaGestion {
 
@@ -20,28 +22,28 @@ public class SistemaGestion {
 
     
 
-    public void registrarProducto(int id, String nombre, double precio, int stock) {
-        if (buscarProductoPorId(id) != null) {
+    public void registrarProducto(Producto producto) throws ProductoNoEncontradoException {
+        if (buscarProductoPorId(producto.getId()) != null) {
             throw new IllegalArgumentException("ID de producto duplicado");
         }
-        productos[contProductos++] = new Producto(id, nombre, precio, stock);
+        productos.add(producto);
     }
 
-    public Producto buscarProductoPorId(int id) {
-        for (int i = 0; i < contProductos; i++) {
-            if (productos[i].getId() == id) {
-                return productos[i];
+    public Producto buscarProductoPorId(int id) throws ProductoNoEncontradoException{
+        for (Producto p : productos) {
+            if (p.getId() == id) {
+                return p;
             }
         }
-        return null;
+        throw new ProductoNoEncontradoException("Producto con ID" + id + " no existe.");
     }
 
     public void listarProductos() {
-        for (int i = 0; i < contProductos; i++) {
-            System.out.println("ID: " + productos[i].getId()
-                    + " | Nombre: " + productos[i].getNombre()
-                    + " | Precio: " + productos[i].getPrecio()
-                    + " | Stock: " + productos[i].getStock());
+        for (Producto p : productos) {
+            System.out.println("ID: " + p.getId()
+                    + " | Nombre: " + p.getNombre()
+                    + " | Precio: " + p.getPrecio()
+                    + " | Stock: " + p.getStock());
         }
     }
 
@@ -51,13 +53,13 @@ public class SistemaGestion {
         if (buscarClientePorId(cliente.getId()) != null) {
             throw new IllegalArgumentException("ID de cliente duplicado");
         }
-        clientes[contClientes++] = cliente;
+        clientes.add(cliente);
     }
 
     public Cliente buscarClientePorId(int id) {
-        for (int i = 0; i < contClientes; i++) {
-            if (clientes[i].getId() == id) {
-                return clientes[i];
+        for (Cliente c : clientes) {
+            if (c.getId() == id) {
+                return c;
             }
         }
         return null;
@@ -65,62 +67,63 @@ public class SistemaGestion {
 
     
 
-    public void crearPedido(int idPedido, int idCliente) {
+    public void crearPedido(int idPedido, int idCliente)throws PedidoInvalidoException {
         if (buscarPedidoPorId(idPedido) != null) {
-            throw new IllegalArgumentException("ID de pedido duplicado");
+            throw new PedidoInvalidoException("ID de pedido duplicado");
         }
 
         Cliente cliente = buscarClientePorId(idCliente);
         if (cliente == null) {
-            throw new IllegalArgumentException("Cliente no existe");
+            throw new PedidoInvalidoException("Cliente no existe");
         }
-
-        pedidos[contPedidos++] = new Pedido(idPedido, cliente, 10);
+        pedidos.add(new Pedido(idPedido, cliente));
     }
 
     public Pedido buscarPedidoPorId(int id) {
-        for (int i = 0; i < contPedidos; i++) {
-            if (pedidos[i].getId() == id) {
-                return pedidos[i];
+        for (Pedido p : pedidos) {
+            if (p.getId() == id) {
+                return p;
             }
         }
         return null;
     }
 
-    public void agregarProductoAPedido(int idPedido, int idProducto, int cantidad) {
+    public void agregarProductoAPedido(int idPedido, int idProducto, int cantidad)throws ProductoNoEncontradoException, StockInsuficienteException, PedidoInvalidoException {
 
         Pedido pedido = buscarPedidoPorId(idPedido);
         Producto producto = buscarProductoPorId(idProducto);
 
         if (pedido == null) {
-            throw new IllegalArgumentException("Pedido no existe");
+            throw new PedidoInvalidoException("Pedido no existe");
         }
 
         if (producto == null) {
-            throw new IllegalArgumentException("Producto no existe");
+            throw new ProductoNoEncontradoException("Producto no existe");
         }
 
         if (producto.getStock() < cantidad) {
-            throw new IllegalArgumentException("Stock insuficiente");
+            throw new StockInsuficienteException("Stock insuficiente");
         }
 
         pedido.agregarProducto(producto, cantidad);
     }
 
-    public void confirmarPedido(int idPedido) {
+    public void confirmarPedido(int idPedido)throws PedidoInvalidoException {
 
         Pedido pedido = buscarPedidoPorId(idPedido);
 
         if (pedido == null) {
-            throw new IllegalArgumentException("Pedido no existe");
+            throw new PedidoInvalidoException("Pedido no existe");
         }
 
         if (!pedido.getEstado().equals(Pedido.BORRADOR)) {
-            throw new IllegalStateException("Solo se puede confirmar pedidos en BORRADOR");
+            throw new PedidoInvalidoException("Solo se puede confirmar pedidos en BORRADOR");
         }
 
-        for (int i = 0; i < pedido.getCantidadDetalles(); i++) {
-            DetallePedido d = pedido.getDetalles()[i];
+        if ( pedido.getDetalles().isEmpty()){
+            throw new PedidoInvalidoException("No se puede confirmar un pedido vacio");
+        }
+        for (DetallePedido d : pedido.getDetalles()) {
             d.getProducto().disminuirStock(d.getCantidad());
         }
 
@@ -137,21 +140,18 @@ public class SistemaGestion {
 
         if (pedido.getEstado().equals(Pedido.CONFIRMADO)) {
 
-            // restaurar stock
-            for (int i = 0; i < pedido.getCantidadDetalles(); i++) {
-                DetallePedido d = pedido.getDetalles()[i];
+            for (DetallePedido d : pedido.getDetalles()) {
                 d.getProducto().aumentarStock(d.getCantidad());
             }
         }
-
         pedido.cancelar();
     }
 
     public void listarPedidos() {
-        for (int i = 0; i < contPedidos; i++) {
-            System.out.println("ID Pedido: " + pedidos[i].getId()
-                    + " | Estado: " + pedidos[i].getEstado()
-                    + " | Total: " + pedidos[i].calcularTotal());
+        for (Pedido p : pedidos) {
+            System.out.println("ID Pedido: " + p.getId()
+                    + " | Estado: " + p.getEstado()
+                    + " | Total: " + p.calcularTotal());
         }
     }
 
@@ -164,12 +164,12 @@ public class SistemaGestion {
         }
 
         System.out.println("Estado: " + pedido.getEstado());
+        System.out.println("Fecha: " + pedido.getFechaCreacion());
         System.out.println("Subtotal: " + pedido.calcularSubtotal());
         System.out.println("Descuento: " + pedido.calcularDescuento());
         System.out.println("Total: " + pedido.calcularTotal());
 
-        for (int i = 0; i < pedido.getCantidadDetalles(); i++) {
-            DetallePedido d = pedido.getDetalles()[i];
+        for (DetallePedido d : pedido.getDetalles()) {
             System.out.println("Producto: " + d.getProducto().getNombre()
                     + " | Cantidad: " + d.getCantidad());
         }

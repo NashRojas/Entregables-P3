@@ -23,7 +23,9 @@ public class Pedido {
     public int getId(){
         return id;
     }
-
+    public Date getFechaCreacion(){
+        return fechaCreacion;
+    }
     public String getEstado() {
         return estado;
     }
