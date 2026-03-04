@@ -9,6 +9,10 @@ public class ClienteVIP extends Cliente {
         this.porcentajeDescuento = porcentajeDescuento;
     }
 
+    public double getPorcentajeDescuento() {
+    return porcentajeDescuento;
+    }
+    
     @Override
     public double calcularDescuento(double subtotal){
         return subtotal * porcentajeDescuento / 100;

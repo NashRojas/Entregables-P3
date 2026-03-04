@@ -30,6 +30,9 @@ public class Main {
             System.out.println("9) Buscar Producto por id");
             System.out.println("10) Buscar Producto por nombre");
             System.out.println("11) Listar Clientes");
+            System.out.println("12) Eliminar Producto por id ");
+            System.out.println("13) Guardar Sistema");
+            System.out.println("14) Cargar Sistema desde archivos");
             System.out.println("0) Salir");
             System.out.println("==================================");
             System.out.print("Inserte una opcion: ");
@@ -153,6 +156,17 @@ public class Main {
                         } catch (ProductoNoEncontradoException e) {
                             System.out.println(e.getMessage());
                         }
+                        break;
+                    case 13:
+                        sistema.guardarProductos();
+                        sistema.guardarClientes();
+                        sistema.guardarPedidos();
+                        break;
+
+                    case 14:
+                        sistema.cargarProductos();
+                        sistema.cargarClientes();
+                        sistema.cargarPedidos();
                         break;
                     case 0:
                         System.out.println("Saliendo....");

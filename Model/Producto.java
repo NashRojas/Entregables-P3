@@ -42,6 +42,11 @@ public class Producto {
     }
 
     public void disminuirStock(int cantidad){
+        
+        if (cantidad <= 0 ){
+            System.out.println("Cantidad Invalida....");
+        }
+
         if (cantidad > stock){
             System.out.println("No hay Stock disponible....");
         }

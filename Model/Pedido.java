@@ -1,4 +1,5 @@
 package Model;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 public class Pedido {
@@ -31,6 +32,10 @@ public class Pedido {
     public String getEstado() {
         return estado;
     }
+    public Cliente getCliente() {
+    return cliente;
+    }
+
     public String getFechaFormateada(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(fechaCreacion);
@@ -92,5 +97,6 @@ public class Pedido {
             "\nFecha: " + getFechaFormateada() +
             "\nTotal productos: " + detalles.size();
 }
+
 
 }

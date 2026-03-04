@@ -1,9 +1,6 @@
 package Model;
 
-import Model.Pedido;
 import Controller.SistemaGestion;
-import Model.DetallePedido;
-
 import java.util.List;
 
 public class ProcesadorPedidos extends Thread {
