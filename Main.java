@@ -22,6 +22,9 @@ public class Main {
             System.out.println("6) Listar productos");
             System.out.println("7) Listar pedidos");
             System.out.println("8) Cambiar estado de pedido");
+            System.out.println("9) Buscar Producto por id");
+            System.out.println("10) Buscar Producto por nombre");
+            System.out.println("11) Listar Clientes");
             System.out.println("0) Salir");
             System.out.println("==================================");
             System.out.print("Inserte una opcion: ");
@@ -118,7 +121,37 @@ public class Main {
                             sistema.cancelarPedido(idCambiar);
                         }
                         break;
-
+                    
+                    case 9:
+                        System.out.print("Ingrese ID del producto: ");
+                        int idBusqueda = sc.nextInt();
+                        sc.nextLine();
+                        sistema.mostrarProductoPorId(idBusqueda);
+                        break;
+                    
+                    case 10:
+                        System.out.print("Ingrese nombre del producto: ");
+                        String nombreBusqueda = sc.nextLine();
+                        sistema.mostrarProductoPorNombre(nombreBusqueda);
+                        break;
+                    
+                    case 11:
+                        sistema.listarClientes();
+                        break;
+                    
+                    case 12:
+                        System.out.print("Ingrese ID del producto a eliminar: ");
+                        int idEliminar = sc.nextInt();
+                        sc.nextLine();
+                        try {
+                            sistema.eliminarProducto(idEliminar);
+                        } catch (ProductoNoEncontradoException e) {
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case 0:
+                        System.out.println("Saliendo....");
+                        break;
                 }
 
             } catch (ProductoNoEncontradoException | StockInsuficienteException | PedidoInvalidoException e) {

@@ -210,9 +210,51 @@ public class SistemaGestion {
 
             if (p.getId() == id) {
                 iterator.remove();
+                System.out.println("Producto Eliminado..");
                 return;
             }
         }
         throw new ProductoNoEncontradoException("Producto no encontrado");
     }
+
+    public void listarClientes() {
+
+    if (clientes.isEmpty()) {
+        System.out.println("No hay clientes registrados.");
+        return;
+    }
+
+    for (Cliente cliente : clientes) { // Iterable
+        System.out.println("----------------------");
+        System.out.println(cliente);
+    }
+    }
+
+    private Producto buscarProductoPorNombre(String nombre) {
+    for (Producto producto : productos) { // Iterable
+        if (producto.getNombre().equalsIgnoreCase(nombre)) {
+            return producto;
+        }
+    }
+    return null;
+    }
+
+    public void mostrarProductoPorId(int id) throws ProductoNoEncontradoException {
+    Producto producto = buscarProductoPorId(id);
+        if (producto == null) {
+            System.out.println("Producto no encontrado.");
+        } else {
+            System.out.println(producto);
+        }
+    }
+
+    public void mostrarProductoPorNombre(String nombre) {
+    Producto producto = buscarProductoPorNombre(nombre);
+        if (producto == null) {
+            System.out.println("Producto no encontrado.");
+        } else {
+            System.out.println(producto);
+        }
+    }
+
 }
