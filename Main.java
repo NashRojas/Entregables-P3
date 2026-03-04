@@ -9,6 +9,11 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
         SistemaGestion sistema = new SistemaGestion();
+        ProcesadorPedidos procesador = new ProcesadorPedidos(sistema);
+        procesador.start();
+
+        GeneradorReportes generador = new GeneradorReportes(sistema);
+        generador.start();
 
         int opcion;
 

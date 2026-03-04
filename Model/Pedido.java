@@ -5,6 +5,7 @@ public class Pedido {
     public static final String BORRADOR = "BORRADOR";
     public static final String CONFIRMADO = "CONFIRMADO";
     public static final String CANCELADO = "CANCELADO";
+    public static final String PROCESADO = "PROCESADO";
 
     private int id;
     private Cliente cliente;
@@ -78,6 +79,10 @@ public class Pedido {
 
     public void cancelar(){
         estado = CANCELADO;
+    }
+
+    public void marcarComoProcesado() {
+    estado = PROCESADO;
     }
 
     @Override

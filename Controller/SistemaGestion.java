@@ -257,4 +257,11 @@ public class SistemaGestion {
         }
     }
 
+    public List<Pedido> getPedidos() {
+    return pedidos;
+    }
+
+    public List<Producto> getProductos() {
+    return productos;
+    }
 }
